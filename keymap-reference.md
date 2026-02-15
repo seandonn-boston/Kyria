@@ -26,15 +26,6 @@ Replaces Caps Lock (right inner column). Activates smart caps mode:
 
 Ideal for typing `SCREAMING_SNAKE_CASE` constants.
 
-### Home Row Combos
-Press two adjacent home row keys simultaneously to trigger common keys without leaving home position. Only active on the QWERTY layer, and require 150ms of idle time to prevent false triggers during fast typing.
-
-| Combo   | Keys  | Output    |
-|---------|-------|-----------|
-| D + F   | Left  | Tab       |
-| J + K   | Right | Escape    |
-| L + ;   | Right | Backspace |
-
 ### Tri-Layer (Conditional)
 Hold **HYPER + SUPER** at the same time to activate the **ADJUST** layer.
 No dedicated ADJUST key needed -- the right outermost thumb is now Key Repeat.
@@ -71,8 +62,6 @@ Three keys change behavior depending on your OS. Set in `config/kyria_rev3.keyma
                        |[FUNC]| LAlt |OS_MOD| Space|  [ { |  |  ] } |  ' " |OS_MOD|OS_MOD|KeyRpt|
                        |      |      |  1   |      |      |  |      |      |  2   |  3   |      |
                        `----------------------------------'  `----------------------------------'
-
-Combos:  D+F = Tab  |  J+K = Esc  |  L+; = Bspc
 
 Left Encoder: Right / Left arrows          Right Encoder: Down / Up arrows
 ```
@@ -175,7 +164,7 @@ Activated by holding **HYPER + SUPER** simultaneously (tri-layer).
 ,-------------------------------------------.                              ,-------------------------------------------.
 |        |BT CLR|      |      |      |BT PRV|                              |BT NXT|      |      |      |      |        |
 |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
-|        | BT 0 | BT 1 | BT 2 | BT 3 | BT 4|                              |RGB On| Sat+ | Hue+ | Bri+ | Eff+ |        |
+|        | BT 0 | BT 1 | BT 2 | BT 3 | BT 4 |                              |RGB On| Sat+ | Hue+ | Bri+ | Eff+ |        |
 |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
 |        |      |      |      |      |      |      |      |  |      |      |      | Sat- | Hue- | Bri- | Eff- |        |
 `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'

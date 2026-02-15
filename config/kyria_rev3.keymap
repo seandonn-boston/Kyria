@@ -31,33 +31,6 @@
 };
 
 / {
-    combos {
-        compatible = "zmk,combos";
-
-        /* Home row combos (QWERTY layer only, require 150ms idle to prevent false triggers) */
-        combo_esc {
-            timeout-ms = <50>;
-            require-prior-idle-ms = <150>;
-            key-positions = <19 20>; // J + K
-            bindings = <&kp ESC>;
-            layers = <QWERTY>;
-        };
-        combo_tab {
-            timeout-ms = <50>;
-            require-prior-idle-ms = <150>;
-            key-positions = <15 16>; // D + F
-            bindings = <&kp TAB>;
-            layers = <QWERTY>;
-        };
-        combo_bspc {
-            timeout-ms = <50>;
-            require-prior-idle-ms = <150>;
-            key-positions = <21 22>; // L + ;
-            bindings = <&kp BSPC>;
-            layers = <QWERTY>;
-        };
-    };
-
     conditional_layers {
         compatible = "zmk,conditional-layers";
 
@@ -79,8 +52,6 @@
             // | LShift |      |      |      |      |      |      |      |  |      |      |      |      |      |      |      |        |
             //                        |F-keys| LAlt |OS_MOD| Space| [ {  |  | ] }  | ' "  |OS_MOD|OS_MOD|KeyRpt|
             //                        |      |      |  1   |      |      |  |      |      |  2   |  3   |      |
-            //
-            // Combos: D+F = Tab | J+K = Esc | L+; = Bspc
             bindings = <
             &mt LCTRL ESC &kp Q &kp W &kp E &kp R &kp T                                                    &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
             &kp TAB       &kp A &kp S &kp D &kp F &kp G                                                    &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
