@@ -18,36 +18,74 @@
 #define ADJUST  4
 
 /*
- * OS-aware modifier aliases (Windows mode by default)
- * For Mac, swap these:
- *   OS_MOD1: LGUI (Mac) / LCTRL (PC)
- *   OS_MOD2: RCTRL (Mac) / K_APP (PC)
- *   OS_MOD3: K_APP (Mac) / RGUI (PC)
+ * OS-aware modifier aliases
+ * Mac mode:  LGUI (Cmd), RCTRL, K_APP
+ * PC mode:   LCTRL, K_APP, RGUI (Win)
  */
-#define OS_MOD1 LCTRL
-#define OS_MOD2 K_APP
-#define OS_MOD3 RGUI
+#define OS_MOD1 LGUI
+#define OS_MOD2 RCTRL
+#define OS_MOD3 K_APP
 
 &led_strip {
     chain-length = <31>; // Per-key + underglow LEDs
 };
 
 / {
+    combos {
+        compatible = "zmk,combos";
+
+        /* Home row combos (QWERTY layer only, require 150ms idle to prevent false triggers) */
+        combo_esc {
+            timeout-ms = <50>;
+            require-prior-idle-ms = <150>;
+            key-positions = <19 20>; // J + K
+            bindings = <&kp ESC>;
+            layers = <QWERTY>;
+        };
+        combo_tab {
+            timeout-ms = <50>;
+            require-prior-idle-ms = <150>;
+            key-positions = <15 16>; // D + F
+            bindings = <&kp TAB>;
+            layers = <QWERTY>;
+        };
+        combo_bspc {
+            timeout-ms = <50>;
+            require-prior-idle-ms = <150>;
+            key-positions = <21 22>; // L + ;
+            bindings = <&kp BSPC>;
+            layers = <QWERTY>;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+
+        /* Hold HYPER + SUPER simultaneously to activate ADJUST */
+        adjust_tri_layer {
+            if-layers = <HYPER SUPER>;
+            then-layer = <ADJUST>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
         default_layer {
             // ---------------------------------------------------------------------------------------------------------------------------------
-            // |  Esc   |   Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  Bksp  |
+            // |Ctrl/Esc|   Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  Bksp  |
             // |  Tab   |   A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |  Enter |
-            // | LShift |   Z  |   X  |   C  |   V  |   B  |RClick| Super|  | Caps |LClick|   N  |   M  | ,  < | . >  | /  ? |  Hyper |
-            //                        |F-keys| LAlt |OS_MOD| Space| [ {  |  | ] }  | ' "  |OS_MOD|OS_MOD|Adjust|
+            // | Sticky |   Z  |   X  |   C  |   V  |   B  |RClick| Super|  |CapsWd|LClick|   N  |   M  | ,  < | . >  | /  ? |  Hyper |
+            // | LShift |      |      |      |      |      |      |      |  |      |      |      |      |      |      |      |        |
+            //                        |F-keys| LAlt |OS_MOD| Space| [ {  |  | ] }  | ' "  |OS_MOD|OS_MOD|KeyRpt|
             //                        |      |      |  1   |      |      |  |      |      |  2   |  3   |      |
+            //
+            // Combos: D+F = Tab | J+K = Esc | L+; = Bspc
             bindings = <
-            &kp ESC   &kp Q &kp W &kp E &kp R &kp T                                                  &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-            &kp TAB   &kp A &kp S &kp D &kp F &kp G                                                  &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
-            &kp LSHFT &kp Z &kp X &kp C &kp V &kp B &mkp MB2   &mo SUPER        &kp CAPS  &mkp MB1  &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &mo HYPER
-                              &mo FUNC &kp LALT &kp OS_MOD1 &kp SPACE &kp LBKT   &kp RBKT &kp SQT &kp OS_MOD2 &kp OS_MOD3 &mo ADJUST
+            &mt LCTRL ESC &kp Q &kp W &kp E &kp R &kp T                                                    &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
+            &kp TAB       &kp A &kp S &kp D &kp F &kp G                                                    &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
+            &sk LSHFT     &kp Z &kp X &kp C &kp V &kp B &mkp MB2   &mo SUPER      &caps_word  &mkp MB1     &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &mo HYPER
+                                  &mo FUNC &kp LALT &kp OS_MOD1 &kp SPACE &kp LBKT   &kp RBKT &kp SQT &kp OS_MOD2 &kp OS_MOD3 &key_repeat
             >;
 
             sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp DOWN UP>;
@@ -102,6 +140,7 @@
         };
 
         adjust_layer {
+            // Activated by holding HYPER + SUPER simultaneously (tri-layer)
             // ---------------------------------------------------------------------------------------------------------------------------------
             // |        |BT CLR|      |      |      |BT PRV|                              |BT NXT|      |      |      |      |        |
             // |        | BT 0 | BT 1 | BT 2 | BT 3 | BT 4 |                             | TOG  | SAI  | HUI  | BRI  | EFF  |        |
